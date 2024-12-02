@@ -44,8 +44,15 @@ func partTwo() {
 			break
 		}
 		ls := strings.Split(string(line), " ")
-		if processTwo(ls) <= 1 {
+		if processOne(ls) {
 			sum += 1
+		} else {
+			for i := range ls {
+				if processOne(append(ls[:i], ls[i+1:]...)) {
+					sum += 1
+					break
+				}
+			}
 		}
 	}
 	fmt.Println(sum)
@@ -82,25 +89,6 @@ func processOne(ls []string) bool {
 
 	}
 	return true
-}
-
-func processTwo(ls []string) int {
-	ln := make([]int, len(ls), len(ls))
-	out := 0
-	for i, j := range ls {
-		ln[i], _ = strconv.Atoi(j)
-	}
-	sigd := sig(ln[1] - ln[0])
-	for i := 1; i < len(ln); i++ {
-		dif := ln[i] - ln[i-1]
-		if abs(dif) == 0 || abs(dif) > 3 {
-			out += 1
-		} else if sig(dif) != sigd {
-			out += 1
-		}
-
-	}
-	return out
 }
 
 func main() {
